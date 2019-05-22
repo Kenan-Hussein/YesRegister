@@ -72,4 +72,12 @@ class UserController extends AbstractController
             'errors' => $errors
         ], 400);
     }
+
+    /**
+     * @Route("/login", name="api_login", methods={"POST"})
+     */
+    public function login()
+    {
+
+    }
 }
