@@ -14,6 +14,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 class UserController extends AbstractController
 {
     /**
+     * @Route("/", name="api_home")
+     */
+    public function home()
+    {
+        return $this->json(['result' => true]);
+    }
+
+    /**
      * @Route("/register", name="api_register", methods={"POST"})
      */
     public function register(ObjectManager $om, UserPasswordEncoderInterface $passwordEncoder, Request $request)
