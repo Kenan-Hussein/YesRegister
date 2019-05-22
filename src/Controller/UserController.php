@@ -55,8 +55,14 @@ class UserController extends AbstractController
 
                 //return the User object as json
                 return $this->json([
-                    'user' => $user
-                ]);
+                    'user' => $this->getUser()
+                ],
+                    200,
+                    [],
+                    [
+                        'groups' => ['api']
+                    ]
+                );
             }
             catch(UniqueConstraintViolationException $e)
             {
@@ -90,6 +96,12 @@ class UserController extends AbstractController
     {
         return $this->json([
             'user' => $this->getUser()
-        ]);
+        ],
+            200,
+            [],
+            [
+                'groups' => ['api']
+            ]
+        );
     }
 }
