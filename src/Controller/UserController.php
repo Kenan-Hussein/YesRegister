@@ -9,6 +9,7 @@ use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 
 class UserController extends AbstractController
 {
@@ -79,5 +80,16 @@ class UserController extends AbstractController
     public function login()
     {
         return $this->json(['result' => true]);
+    }
+
+    /**
+     * @Route("/profile", name="api_profile")
+     * @IsGranted("ROLE_USER")
+     */
+    public function profile()
+    {
+        return $this->json([
+            'user' => $this->getUser()
+        ]);
     }
 }
