@@ -8,6 +8,8 @@ use App\Entity\User;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
+
 class UserController extends AbstractController
 {
     /**
@@ -44,14 +46,25 @@ class UserController extends AbstractController
             $user->setEmail($email);
             $user->setPassword($encodedPassword);
 
-            //Save new user
-            $om->persist($user);
-            $om->flush();
+            try
+            {
+                //Save new user
+                $om->persist($user);
+                $om->flush();
 
-            //return the User object as json
-            return $this->json([
-                'user' => $user
-            ]);
+                //return the User object as json
+                return $this->json([
+                    'user' => $user
+                ]);
+            }
+            catch(UniqueConstraintViolationException $e)
+            {
+                $errors[] = "The email provided already has an account!";
+            }
+            catch(\Exception $e)
+            {
+                $errors[] = "Unable to save new user at this time.";
+            }
         }
 
         //return the $errors as json if there are any with status code
